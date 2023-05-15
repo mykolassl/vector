@@ -1,0 +1,5 @@
+cmake_minimum_required(VERSION 3.25)
+project(Vector)
+include_directories(libs)
+file(GLOB SOURCES "src/*.cpp")
+add_executable(Vector_run ${SOURCES})
