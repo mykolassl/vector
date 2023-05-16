@@ -69,6 +69,10 @@ public:
 
     const_iterator cend() const { return m_elements + m_size; }
 
+    value_type front() const { return *m_elements; }
+
+    value_type back() const { return *(m_elements + m_size - 1); }
+
     value_type at(size_type index) const {
         try {
             if (index >= m_size) throw std::out_of_range("Index out of bounds");
@@ -84,7 +88,9 @@ public:
     // Setters
 
     void push_back(const value_type& element) {
-//        if (m_capacity)
+        if (m_size == m_capacity) { reallocate(); }
+
+        m_elements[m_size++] = element;
     }
 
     // Operator overloads
@@ -102,16 +108,24 @@ public:
     }
 
     Vector<value_type>& operator=(const Vector<value_type>& v) {
+        if (&v == this) return *this;
+
         m_size = v.m_size;
         m_capacity = v.m_capacity;
         std::copy(v.m_elements, v.m_elements + v.m_size, m_elements);
+
+        return *this;
     }
 
     Vector<value_type>& operator=(Vector<value_type>&& v) noexcept {
+        if (&v == this) return *this;
+
         m_size = v.m_size;
         m_capacity = v.m_capacity;
         std::move(v.m_elements, v.m_elements + v.m_size, m_elements);
         v.m_size = v.m_capacity = 0;
+
+        return *this;
     }
 
     // Friend functions
@@ -127,4 +141,16 @@ private:
     size_type m_capacity;
     iterator m_elements;
 
+    void reallocate() {
+        if (m_capacity == 0) {
+            m_capacity = 2;
+            m_elements = new value_type[m_capacity];
+        } else {
+            m_capacity *= 2;
+            iterator temporary = new value_type[m_capacity];
+            std::move(m_elements, m_elements + m_size, temporary);
+            delete [] m_elements;
+            m_elements = temporary;
+        }
+    }
 };
