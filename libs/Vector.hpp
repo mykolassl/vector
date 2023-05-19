@@ -64,9 +64,9 @@ public:
 
     // Getters
 
-    size_type size() const { return m_size; }
+    [[nodiscard]] size_type size() const { return m_size; }
 
-    size_type capacity() const { return m_capacity; }
+    [[nodiscard]] size_type capacity() const { return m_capacity; }
 
     iterator begin() { return m_elements; }
 
@@ -81,15 +81,13 @@ public:
     value_type back() const { return *(m_elements + m_size - 1); }
 
     value_type at(size_type index) const {
-        try {
-            if (index >= m_size) throw std::out_of_range("Index out of bounds");
+        if (index >= m_size) throw std::out_of_range("Index out of vector bounds");
+        return m_elements[index];
+    }
 
-            return m_elements[index];
-        } catch (std::out_of_range& error) {
-            std::cout << "Error: " << error.what() << std::endl;
-
-            exit(1);
-        }
+    value_type& at(size_type index) {
+        if (index >= m_size) throw std::out_of_range("Index out of vector bounds");
+        return m_elements[index];
     }
 
     bool empty() { return m_elements == m_elements + m_size; }
@@ -145,15 +143,8 @@ public:
     // Operator overloads
 
     value_type operator[](size_type index) const {
-        try {
-            if (index > m_size - 1) throw std::out_of_range("Index out of bounds");
-
-            return m_elements[index];
-        } catch (std::out_of_range& error) {
-            std::cout << "Error: " << error.what() << std::endl;
-            
-            exit(1);
-        }
+        if (index >= m_size) throw std::out_of_range("Index out of vector bounds");
+        return m_elements[index];
     }
 
     Vector<value_type>& operator=(const Vector<value_type>& v) {

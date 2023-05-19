@@ -62,6 +62,21 @@ int main() {
     characters.assign({'L', 'a', 'b', 'a', 's'});
     std::cout << characters << std::endl;
 
+    // At method
+    Vector<int> data = { 1, 2, 4, 5, 5, 6 };
+    data.at(1) = 88;
+
+    std::cout << "Element at index 2 has value " << data.at(2) << '\n';
+    std::cout << "data size = " << data.size() << '\n';
+
+    try {
+        data.at(6) = 666;
+    } catch (std::out_of_range const& exc) {
+        std::cout << exc.what() << '\n';
+    }
+
+    std::cout << data << std::endl;
+
 
     /*
     Vector<int> t5;
