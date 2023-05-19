@@ -36,11 +36,11 @@ public:
         std::copy(start, end, m_elements);
     }
 
-    Vector(std::initializer_list<value_type> elementList)
-        : m_size(static_cast<int>(elementList.size())),
-          m_capacity(static_cast<int>(elementList.size())),
-          m_elements(new value_type[elementList.size()]) {
-        std::move(elementList.begin(), elementList.end(), m_elements);
+    Vector(std::initializer_list<value_type> element_list)
+        : m_size(static_cast<int>(element_list.size())),
+          m_capacity(static_cast<int>(element_list.size())),
+          m_elements(new value_type[element_list.size()]) {
+        std::move(element_list.begin(), element_list.end(), m_elements);
     }
 
     Vector(Vector& v)
@@ -92,6 +92,8 @@ public:
 
     bool empty() { return m_elements == m_elements + m_size; }
 
+    const_iterator data() const { return m_elements; }
+
     // Setters
 
     void push_back(const value_type& element) {
@@ -106,9 +108,22 @@ public:
         reallocate(new_capacity);
     }
 
+    void resize(size_type size, value_type fill_element = 0) {
+        if (size > m_capacity) {
+            size_type old_capacity = m_capacity;
+            reallocate(size);
+            std::fill(m_elements + old_capacity, m_elements + m_capacity, fill_element);
+        }
+
+        m_size = size;
+    }
+
     void shrink_to_fit() { reallocate(m_size); }
 
-    void clear() { m_size = 0; }
+    void clear() {
+        for (size_type i = 0; i < m_size; i++) m_elements[i].~value_type();
+        m_size = 0;
+    }
 
     void assign(int size, value_type fill_element) {
         if (size > m_capacity) {
@@ -131,13 +146,13 @@ public:
         std::copy(start, end, m_elements);
     }
 
-    void assign(std::initializer_list<value_type>&& elementList) {
-        if (elementList.size() > m_capacity) {
-            reallocate(elementList.size());
+    void assign(std::initializer_list<value_type>&& element_list) {
+        if (element_list.size() > m_capacity) {
+            reallocate(element_list.size());
         }
 
-        m_size = elementList.size();
-        std::move(elementList.begin(), elementList.end(), m_elements);
+        m_size = element_list.size();
+        std::move(element_list.begin(), element_list.end(), m_elements);
     }
 
     // Operator overloads
@@ -183,15 +198,15 @@ private:
     size_type m_capacity;
     iterator m_elements;
 
-    void reallocate(const size_type& new_capacity = 0) {
+    void reallocate(const size_type& new_capacity = ((size_type) - 1)) {
         if (m_capacity == 0) {
-            m_capacity = new_capacity == 0 ? 2 : new_capacity;
+            m_capacity = new_capacity == ((size_type) - 1) ? 2 : new_capacity;
             m_elements = new value_type[m_capacity];
         } else {
-            if (new_capacity == 0) m_capacity *= 2;
+            if (new_capacity == ((size_type) - 1)) m_capacity *= 2;
             else m_capacity = new_capacity;
 
-            iterator temporary = new value_type[new_capacity == 0 ? m_capacity : new_capacity];
+            iterator temporary = new value_type[new_capacity == ((size_type) - 1) ? m_capacity : new_capacity];
             std::move(m_elements, m_elements + m_size, temporary);
             delete [] m_elements;
             m_elements = temporary;

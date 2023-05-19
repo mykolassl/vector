@@ -2,17 +2,31 @@
 #include "../libs/Vector.hpp"
 #include <chrono>
 #include <vector>
+#include <algorithm>
+#include <numeric>
+#include <iomanip>
 
 class Entity {
 public:
     Entity() {
         std::cout << "Constructor was called" << std::endl;
     }
+
+    ~Entity() {
+        std::cout << "Destructor was called" << std::endl;
+    }
 };
+
+void pointer_func(const int* p, size_t size) {
+    std::cout << "data = ";
+    for (std::size_t i = 0; i < size; ++i)
+        std::cout << p[i] << ' ';
+    std::cout << std::endl;
+}
 
 int main() {
     // Constructors
-    std::cout << "Constructor tests:" << std::endl;
+    std::cout << std::endl << "Constructor tests:" << std::endl;
 
     Vector<std::string> words1 { "123", "321", "213" };
     std::cout << words1 << std::endl;
@@ -27,7 +41,7 @@ int main() {
     std::cout << words4 << std::endl;
 
     // Assignments
-    std::cout << "Assignment tests: " << std::endl;
+    std::cout << std::endl << "Assignment tests: " << std::endl;
 
     Vector<int> x { 1, 2, 3 }, y, z;
     const auto w = { 4, 5, 6, 7 };
@@ -51,6 +65,8 @@ int main() {
     std::cout << "z = " << z << std::endl;
 
     // Assign method
+    std::cout << std::endl << "Assign method tests:" << std::endl;
+
     Vector<char> characters;
     characters.assign(5, 'a');
     std::cout << characters << std::endl;
@@ -63,102 +79,141 @@ int main() {
     std::cout << characters << std::endl;
 
     // At method
+    std::cout << std::endl << "At method tests:" << std::endl;
+
     Vector<int> data = { 1, 2, 4, 5, 5, 6 };
     data.at(1) = 88;
 
-    std::cout << "Element at index 2 has value " << data.at(2) << '\n';
-    std::cout << "data size = " << data.size() << '\n';
+    std::cout << "Element at index 2 has value " << data.at(2) << std::endl;
+    std::cout << "data size = " << data.size() << std::endl;
 
     try {
         data.at(6) = 666;
     } catch (std::out_of_range const& exc) {
-        std::cout << exc.what() << '\n';
+        std::cout << exc.what() << std::endl;
     }
 
     std::cout << data << std::endl;
 
+    // Front and back methods
+    std::cout << std::endl << "Front and back method tests:" << std::endl;
 
-    /*
-    Vector<int> t5;
-    t5.push_back(10);
-    t5.push_back(20);
-    t5.push_back(30);
-    std::cout << "Size: " << t5.size() << ", capacity: " << t5.capacity() << std::endl;
-    std::cout << t5 << " " << t5.front() << " " << t5.back() << std::endl;
-
-    Vector<int> t6 = {5, 6, 7, 8, 9};
-    std::cout << "Size: " << t6.size() << ", capacity: " << t6.capacity() << std::endl;
-    Vector<int> t7 = t6;
-    t7.push_back(500);
-    std::cout << "Size: " << t7.size() << ", capacity: " << t7.capacity() << std::endl;
-    std::cout << t6 << " " << t7 << std::endl;
-
-    auto start = std::chrono::high_resolution_clock::now();
-
-    Vector<int> test;
-    for (int i = 0; i < 10000000; i++) {
-        test.push_back(i);
+    Vector<char> letters {'a', 'b', 'c', 'd', 'e', 'f'};
+    if (!letters.empty()) {
+        std::cout << "The first letter is " << letters.front() << std::endl;
+        std::cout << "The last letter is " << letters.back() << std::endl;
     }
 
-    auto end = std::chrono::high_resolution_clock::now();
-    auto diff = std::chrono::duration_cast<std::chrono::milliseconds>(end-start);
-    std::cout << diff.count() / 1000.0 << std::endl;
-    std::cout << test.capacity() << std::endl;
+    // Data method
+    std::cout << std::endl << "Data method tests:" << std::endl;
 
-    auto start2 = std::chrono::high_resolution_clock::now();
+    Vector<int> container {1, 2, 3, 4};
+    pointer_func(container.data(), container.size());
 
-    Vector<Entity> test2;
-//    Entity e;
-    for (int i = 0; i < 10000000; i++) {
-//        test2.push_back(e);
+    // Begin and end methods
+    std::cout << std::endl << "Begin and end method tests:" << std::endl;
+
+    Vector<int> nums {1, 2, 4, 8, 16};
+    Vector<std::string> fruits {"orange", "apple", "raspberry"};
+    Vector<char> empty;
+
+    std::for_each(nums.begin(), nums.end(), [](const int n) { std::cout << n << ' '; });
+    std::cout << std::endl;
+
+    std::cout << "Sum of nums: " << std::accumulate(nums.begin(), nums.end(), 0) << std::endl;
+
+    if (!fruits.empty()) std::cout << "First fruit: " << *fruits.begin() << std::endl;
+
+    if (empty.begin() == empty.end()) std::cout << "vector 'empty' is indeed empty." << std::endl;
+
+    // Empty method
+    std::cout << std::endl << "Empty method tests:" << std::endl << std::boolalpha;
+
+    Vector<int> numbers;
+    std::cout << "Initially, numbers.empty(): " << numbers.empty() << std::endl;
+
+    numbers.push_back(42);
+    std::cout << "After adding elements, numbers.empty(): " << numbers.empty() << std::endl;
+
+    // Size method
+    std::cout << std::endl << "Size and max_size method tests:" << std::endl;
+
+    Vector<int> ns {1, 3, 5, 7};
+
+    std::cout << "'ns' contains " << ns.size() << " elements." << std::endl;
+
+    // Reserve method
+    std::cout << std::endl << "Reserve method tests:" << std::endl;
+
+    const int maxElements = 32;
+    {
+        int reallocationCount = 0;
+        Vector<int> v1;
+        v1.reserve(maxElements);
+
+        for (int i = 0; i < maxElements; i++) {
+            if (v1.size() == v1.capacity()) reallocationCount++;
+            v1.push_back(i);
+        }
+        std::cout << v1 << std::endl;
+
+        std::cout << "Vector memory was reallocated " << reallocationCount << " times (reserve was used)." << std::endl;
+    }
+    {
+        int reallocationCount = 0;
+        Vector<int> v1;
+
+        for (int i = 0; i < maxElements; i++) {
+            if (v1.size() == v1.capacity()) reallocationCount++;
+            v1.push_back(i);
+        }
+        std::cout << v1 << std::endl;
+
+        std::cout << "Vector memory was reallocated " << reallocationCount << " times (reserve wasn't used)." << std::endl;
     }
 
-    auto end2 = std::chrono::high_resolution_clock::now();
-    auto diff2 = std::chrono::duration_cast<std::chrono::milliseconds>(end2-start2);
-    std::cout << diff2.count() / 1000.0 << std::endl;
-    std::cout << test2.capacity() << '\n';
+    // Capacity method
+    std::cout << std::endl << "Capacity method tests:" << std::endl;
 
-    Vector<int> p;
-    std::cout << "Size: " << p.size() << ", capacity: " << p.capacity() << std::endl;
-//    p.reserve(5);
-    for (int i = 0; i < 300; i++) {
-        p.push_back(i);
+    int sz = 100;
+    Vector<int> v;
+
+    auto cap = v.capacity();
+    std::cout << "Initial size: " << v.size() << ", capacity: " << cap << '\n';
+
+    std::cout << "\nDemonstrate the capacity's growth policy."
+                 "\nSize:  Capacity:  Ratio:\n" << std::left;
+    while (sz-- > 0) {
+        v.push_back(sz);
+        if (cap != v.capacity()) {
+            std::cout << std::setw( 7) << v.size()
+                      << std::setw(11) << v.capacity()
+                      << std::setw(10) << v.capacity() / static_cast<float>(cap) << '\n';
+            cap = v.capacity();
+        }
     }
 
+    std::cout << "\nFinal size: " << v.size() << ", capacity: " << v.capacity() << '\n';
 
-//    p.reserve(6);
-//    std::cout << p << std::endl;
-    std::cout << "Size: " << p.size() << ", capacity: " << p.capacity() << std::endl;
-    p.clear();
-    std::cout << "Size: " << p.size() << ", capacity: " << p.capacity() << std::endl;
-//    std::cout << p << std::endl;
-    std::cout << "Is empty? " << p.empty() << std::endl;
+    // Shrink_to_fit method
+    std::cout << std::endl << "Shrink_to_fit method tests:" << std::endl;
 
-    p.clear();
-
-    for (int i = 0; i < 300; i++) std::cout << p[i] << " ";
-
-    // Assign
-//    std::vector<Entity> test4;
-////    for (auto i : test4) { std::cout << i << " "; }
-//    std::cout << std::endl;
-//
-//    test4.assign(5, Entity());
-//
-////    for (auto i : test4) { std::cout << i << " "; }
-//    std::cout << std::endl;
-//    std::cout << "Size: " << test4.size() << ", capacity: " << test4.capacity() << std::endl;
-//
-//    Vector<Entity> test5;
-////    for (auto i : test5) { std::cout << i << " "; }
-//    std::cout << std::endl;
-//
-////    test5.assign(5, Entity());
-//
-////    for (auto i : test5) { std::cout << i << " "; }
-//    std::cout << std::endl;
-//    std::cout << "Size: " << test5.size() << ", capacity: " << test5.capacity() << std::endl;
-    */
+    Vector<int> v1;
+    std::cout << "Default-constructed capacity is " << v1.capacity() << '\n';
+    v1.resize(100);
+    std::cout << "Capacity of a 100-element vector is " << v1.capacity() << '\n';
+    v1.resize(50);
+    std::cout << "Capacity after resize(50) is " << v1.capacity() << '\n';
+    v1.shrink_to_fit();
+    std::cout << "Capacity after shrink_to_fit() is " << v1.capacity() << '\n';
+    v1.clear();
+    std::cout << "Capacity after clear() is " << v1.capacity() << '\n';
+    v1.shrink_to_fit();
+    std::cout << "Capacity after shrink_to_fit() is " << v1.capacity() << '\n';
+    for (int i = 1000; i < 1300; ++i) v1.push_back(i);
+    std::cout << "Capacity after adding 300 elements is " << v1.capacity() << '\n';
+    v1.shrink_to_fit();
+    std::cout << "Capacity after shrink_to_fit() is " << v1.capacity() << '\n';
 
     return 0;
 }
