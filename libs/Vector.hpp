@@ -102,6 +102,14 @@ public:
         m_elements[m_size++] = element;
     }
 
+    void push_back(const value_type&& element) {
+        if (m_size == m_capacity) reallocate();
+        std::cout << "Ran" << std::endl;
+
+        m_elements[m_size++] = element;
+        std::cout << "Res " << element << std::endl;
+    }
+
     void reserve(const size_type& new_capacity) {
         if (new_capacity <= m_capacity || new_capacity <= 0) return;
 
@@ -190,8 +198,7 @@ public:
             if (i - size == 0) break;
         }
 
-        for (size_type i = 0; i < size; i++) m_elements[index + i] = element;
-
+        std::fill(m_elements + index, m_elements + index + size, element);
         m_size += size;
     }
 
@@ -206,8 +213,7 @@ public:
             if (i - size == 0) break;
         }
 
-        for (size_type i = 0; i < size; i++) m_elements[index + i] = std::move(element);
-
+        std::fill(m_elements + index, m_elements + index + size, element);
         m_size += size;
     }
 
@@ -241,6 +247,14 @@ public:
 
         std::move(element_list.begin(), element_list.end(), m_elements + index);
         m_size += size;
+    }
+
+    template<class... Args>
+    void emplace(iterator position, Args&&... args) {
+        if (m_size == m_capacity) reallocate();
+
+        new (position) value_type(std::forward<Args>(args)...);
+        m_size++;
     }
 
     // Operator overloads
@@ -286,7 +300,7 @@ private:
     size_type m_capacity;
     iterator m_elements;
 
-    void reallocate(const size_type& new_capacity = ((size_type) - 1)) {
+    void reallocate(const size_type& new_capacity = ((size_type) - 1)) noexcept {
         if (m_capacity == 0) {
             m_capacity = new_capacity == ((size_type) - 1) ? 2 : new_capacity;
             m_elements = new value_type[m_capacity];

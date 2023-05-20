@@ -8,12 +8,41 @@
 
 class Entity {
 public:
+    int x = 10;
+
     Entity() {
         std::cout << "Constructor was called" << std::endl;
     }
 
+    Entity(const Entity& e) {
+        std::cout << "Object was copied" << std::endl;
+    }
+
     ~Entity() {
         std::cout << "Destructor was called" << std::endl;
+    }
+
+    friend std::ostream& operator<<(std::ostream& out, const Entity& e) {
+        out << e.x << " ";
+        return out;
+    }
+};
+
+struct A {
+    std::string s;
+    A() {}
+    explicit A(std::string str) : s(std::move(str))  { std::cout << " constructed\n"; }
+    A(const A& o) : s(o.s) { std::cout << " copy constructed\n"; }
+    A(A&& o)  noexcept : s(std::move(o.s)) { std::cout << " move constructed\n"; }
+    A& operator=(const A& other) {
+        s = other.s;
+        std::cout << " copy assigned\n";
+        return *this;
+    }
+    A& operator=(A&& other)  noexcept {
+        s = std::move(other.s);
+        std::cout << " move assigned\n";
+        return *this;
     }
 };
 
@@ -253,6 +282,31 @@ int main() {
 
     c1.insert(c1.end(), {601, 602, 603});
     std::cout << c1 << std::endl;
+
+    // Emplace method
+    std::cout << std::endl << "Emplace method tests:" << std::endl;
+
+    Vector<A> c3;
+    c3.reserve(10);
+    std::cout << "construct 2 times A:\n";
+    A two { "two" };
+    A three { "three" };
+
+    std::cout << "emplace:\n";
+    c3.emplace(c3.end(), "one");
+    std::cout << "\nSize=" << c3.size() << ", Capacity=" << c3.capacity() << '\n';
+
+    std::cout << "emplace with A&:\n";
+    c3.emplace(c3.end(), two);
+    std::cout << "\nSize=" << c3.size() << ", Capacity=" << c3.capacity() << '\n';
+
+    std::cout << "emplace with A&&:\n";
+    c3.emplace(c3.end(), std::move(three));
+    std::cout << "\nSize=" << c3.size() << ", Capacity=" << c3.capacity() << '\n';
+
+    std::cout << "content:\n";
+    for (auto & i : c3) std::cout << ' ' << i.s;
+    std::cout << '\n';
 
     return 0;
 }
