@@ -215,5 +215,44 @@ int main() {
     v1.shrink_to_fit();
     std::cout << "Capacity after shrink_to_fit() is " << v1.capacity() << '\n';
 
+    // Clear method
+    std::cout << std::endl << "Clear method tests:" << std::endl;
+
+    Vector<int> v3{1, 2, 3};
+
+    std::cout << "Before clear: ";
+    std::cout << v3;
+    std::cout << "\nSize=" << v3.size() << ", Capacity=" << v3.capacity() << '\n';
+
+    std::cout << "Clear\n";
+    v3.clear();
+
+    std::cout << "After clear:";
+    std::cout << v3;
+    std::cout << "\nSize=" << v3.size() << ", Capacity=" << v3.capacity() << '\n';
+
+    // Insert method
+    std::cout << std::endl << "Insert method tests:" << std::endl;
+
+    Vector<int> c1(3, 100);
+    std::cout << c1 << std::endl;
+
+    c1.insert(c1.begin(), 200);
+    std::cout << c1 << std::endl;
+
+    c1.insert(c1.begin(), 2, 300);
+    std::cout << c1 << std::endl;
+
+    Vector<int> c2(2, 400);
+    c1.insert(c1.begin() + 2, c2.begin(), c2.end());
+    std::cout << c1 << std::endl;
+
+    int arr[] = {501, 502, 503};
+    c1.insert(c1.begin(), arr, arr + std::size(arr));
+    std::cout << c1 << std::endl;
+
+    c1.insert(c1.end(), {601, 602, 603});
+    std::cout << c1 << std::endl;
+
     return 0;
 }

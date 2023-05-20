@@ -155,6 +155,94 @@ public:
         std::move(element_list.begin(), element_list.end(), m_elements);
     }
 
+    void insert(iterator position, value_type& element) {
+        // Calculate the index in case vector is reallocated and
+        // the position pointer is invalidated.
+        size_type index = position - m_elements;
+        if (m_size == m_capacity) reallocate();
+
+        for (size_type i = m_size; i > index; i--) m_elements[i] = m_elements[i - 1];
+
+        m_elements[index] = element;
+        m_size++;
+    }
+
+    void insert(iterator position, value_type&& element) {
+        // Calculate the index in case vector is reallocated and
+        // the position pointer is invalidated.
+        size_type index = position - m_elements;
+        if (m_size == m_capacity) reallocate();
+
+        for (size_type i = m_size; i > index; i--) m_elements[i] = m_elements[i - 1];
+
+        m_elements[index] = std::move(element);
+        m_size++;
+    }
+
+    void insert(iterator position, size_type size, value_type& element) {
+        // Calculate the index in case vector is reallocated and
+        // the position pointer is invalidated.
+        size_type index = position - m_elements;
+        if (m_size + size > m_capacity) reallocate(m_size + size);
+
+        for (size_type i = m_size + size - 1; i > index; i--) {
+            m_elements[i] = m_elements[i - size];
+            if (i - size == 0) break;
+        }
+
+        for (size_type i = 0; i < size; i++) m_elements[index + i] = element;
+
+        m_size += size;
+    }
+
+    void insert(iterator position, size_type size, value_type&& element) {
+        // Calculate the index in case vector is reallocated and
+        // the position pointer is invalidated.
+        size_type index = position - m_elements;
+        if (m_size + size > m_capacity) reallocate(m_size + size);
+
+        for (size_type i = m_size + size - 1; i > index; i--) {
+            m_elements[i] = m_elements[i - size];
+            if (i - size == 0) break;
+        }
+
+        for (size_type i = 0; i < size; i++) m_elements[index + i] = std::move(element);
+
+        m_size += size;
+    }
+
+    void insert(iterator position, iterator start, iterator end) {
+        // Calculate the index in case vector is reallocated and
+        // the position pointer is invalidated.
+        size_type index = position - m_elements;
+        size_type size = end - start;
+
+        if (m_size + size > m_capacity) reallocate(m_size + size);
+
+        for (size_type i = m_size + size - 1; i > index; i--) {
+            m_elements[i] = m_elements[i - size];
+            if (i - size == 0) break;
+        }
+
+        std::copy(start, end, m_elements + index);
+        m_size += size;
+    }
+
+    void insert(iterator position, std::initializer_list<value_type>&& element_list) {
+        size_type index = position - m_elements;
+        size_type size = element_list.size();
+
+        if (m_size + size > m_capacity) reallocate(m_size + size);
+
+        for (size_type i = m_size + size - 1; i > index; i--) {
+            m_elements[i] = m_elements[i - size];
+            if (i - size == 0) break;
+        }
+
+        std::move(element_list.begin(), element_list.end(), m_elements + index);
+        m_size += size;
+    }
+
     // Operator overloads
 
     value_type operator[](size_type index) const {
