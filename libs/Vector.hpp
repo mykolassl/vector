@@ -257,6 +257,37 @@ public:
         m_size++;
     }
 
+    iterator erase(iterator position) {
+        size_type index = position - m_elements;
+        position->~value_type();
+        for (size_type i = index; i < m_size; i++) m_elements[i] = m_elements[i + 1];
+
+        m_size--;
+
+        return position == end() ? end() : position;
+    }
+
+    iterator erase(iterator start, iterator end) {
+        size_type index = start - m_elements;
+        size_type size = end - start;
+
+        for (iterator i = start; i != end; i++) i->~value_type();
+
+        for (size_type i = index; i < m_size; i++) m_elements[i] = m_elements[i + size];
+
+        auto oldEnd = m_elements + m_size;
+        m_size -= size;
+
+        if (end == oldEnd) {
+            iterator newEnd = m_elements + m_size;
+            return newEnd;
+        } else if (end - start == 0) {
+            return end;
+        }
+
+        return end + 1;
+    }
+
     // Operator overloads
 
     value_type operator[](size_type index) const {

@@ -308,5 +308,29 @@ int main() {
     for (auto & i : c3) std::cout << ' ' << i.s;
     std::cout << '\n';
 
+    // Erase method
+    std::cout << std::endl << "Erase method tests:" << std::endl;
+
+    Vector<int> c{0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+    std::cout << c << std::endl;
+
+    c.erase(c.begin());
+    std::cout << c << std::endl;
+
+    c.erase(c.begin() + 2, c.begin() + 5);
+    std::cout << c << std::endl;
+
+    // Erase all even numbers
+    for (Vector<int>::iterator it = c.begin(); it != c.end();)
+    {
+        if (*it % 2 == 0)
+            it = c.erase(it);
+        else
+            ++it;
+    }
+
+    std::cout << c << std::endl;
+
+
     return 0;
 }
