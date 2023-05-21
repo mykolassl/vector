@@ -1,5 +1,7 @@
 #pragma once
 
+#include <compare>
+
 template<class T>
 class Vector {
 public:
@@ -78,7 +80,11 @@ public:
 
     value_type front() const { return *m_elements; }
 
+    value_type& front() { return *m_elements; }
+
     value_type back() const { return *(m_elements + m_size - 1); }
+
+    value_type& back() { return *(m_elements + m_size - 1); }
 
     value_type at(size_type index) const {
         if (index >= m_size) throw std::out_of_range("Index out of vector bounds");
@@ -102,12 +108,10 @@ public:
         m_elements[m_size++] = element;
     }
 
-    void push_back(const value_type&& element) {
+    void push_back(value_type&& element) {
         if (m_size == m_capacity) reallocate();
-        std::cout << "Ran" << std::endl;
 
-        m_elements[m_size++] = element;
-        std::cout << "Res " << element << std::endl;
+        m_elements[m_size++] = std::move(element);
     }
 
     void reserve(const size_type& new_capacity) {
@@ -116,14 +120,19 @@ public:
         reallocate(new_capacity);
     }
 
-    void resize(size_type size, value_type fill_element = 0) {
+    void resize(size_type size, const value_type& fill_element = value_type()) {
         if (size > m_capacity) {
-            size_type old_capacity = m_capacity;
             reallocate(size);
-            std::fill(m_elements + old_capacity, m_elements + m_capacity, fill_element);
+            std::fill(m_elements + m_size, m_elements + m_capacity, fill_element);
+            m_size = size;
+        } else if (size > m_size) {
+            size_type old_size = m_size;
+            m_size = size;
+            std::fill(m_elements + old_size, m_elements + m_size, fill_element);
+        } else {
+            for (size_type i = size; i < m_size; i++) m_elements[i].~value_type();
+            m_size = size;
         }
-
-        m_size = size;
     }
 
     void shrink_to_fit() { reallocate(m_size); }
@@ -250,11 +259,15 @@ public:
     }
 
     template<class... Args>
-    void emplace(iterator position, Args&&... args) {
+    value_type& emplace(iterator position, Args&&... args) {
+        size_type index = position - m_elements;
+
         if (m_size == m_capacity) reallocate();
 
-        new (position) value_type(std::forward<Args>(args)...);
+        new (&m_elements[index]) value_type(std::forward<Args>(args)...);
         m_size++;
+
+        return m_elements[index];
     }
 
     iterator erase(iterator position) {
@@ -286,6 +299,28 @@ public:
         }
 
         return end + 1;
+    }
+
+    template<class... Args>
+    value_type& emplace_back(Args&&... args) {
+        if (m_size == m_capacity) reallocate();
+
+        new (&m_elements[m_size]) value_type(std::forward<Args>(args)...);
+        m_size++;
+
+        return m_elements[m_size];
+    }
+
+    void pop_back() {
+        if (m_size == 0) return;
+
+        m_elements[--m_size].~value_type();
+    }
+
+    void swap(Vector<value_type>& v) {
+        std::swap(m_elements, v.m_elements);
+        std::swap(m_size, v.m_size);
+        std::swap(m_capacity, v.m_capacity);
     }
 
     // Operator overloads
@@ -324,6 +359,17 @@ public:
         for (size_type i = 0; i < v.m_size; i++) out << v[i] << " ";
 
         return out;
+    }
+
+    auto operator<=> (const Vector<value_type>& v) const {
+        return std::lexicographical_compare_three_way(cbegin(), cend(), v.cbegin(), v.cend());
+    }
+
+    bool operator== (const Vector<value_type>& v) const {
+        for (int i = 0; i < v.m_size; i++) {
+            if (v[i] != m_elements[i]) return false;
+        }
+        return true;
     }
 
 private:

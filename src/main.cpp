@@ -46,6 +46,27 @@ struct A {
     }
 };
 
+struct President
+{
+    std::string name;
+    std::string country;
+    int year;
+
+    President() {}
+
+    President(std::string p_name, std::string p_country, int p_year)
+            : name(std::move(p_name)), country(std::move(p_country)), year(p_year)
+    {
+        std::cout << "I am being constructed.\n";
+    }
+    President(President&& other)
+            : name(std::move(other.name)), country(std::move(other.country)), year(other.year)
+    {
+        std::cout << "I am being moved.\n";
+    }
+    President& operator=(const President& other) = default;
+};
+
 void pointer_func(const int* p, size_t size) {
     std::cout << "data = ";
     for (std::size_t i = 0; i < size; ++i)
@@ -243,6 +264,7 @@ int main() {
     std::cout << "Capacity after adding 300 elements is " << v1.capacity() << '\n';
     v1.shrink_to_fit();
     std::cout << "Capacity after shrink_to_fit() is " << v1.capacity() << '\n';
+    std::cout << v1 << std::endl;
 
     // Clear method
     std::cout << std::endl << "Clear method tests:" << std::endl;
@@ -328,9 +350,102 @@ int main() {
         else
             ++it;
     }
-
     std::cout << c << std::endl;
 
+    // Emplace_back method
+    std::cout << std::endl << "Emplace_back method tests:" << std::endl;
+    
+    Vector<President> elections;
+    std::cout << "emplace_back:\n";
+    auto& ref = elections.emplace_back("Nelson Mandela", "South Africa", 1994);
+
+    Vector<President> reElections;
+    std::cout << "\npush_back:\n";
+    reElections.push_back(President("Franklin Delano Roosevelt", "the USA", 1936));
+
+    std::cout << "\nContents:\n";
+    for (President const& president: elections) {
+        std::cout << president.name << " was elected president of "
+                  << president.country << " in " << president.year << ".\n";
+    }
+    for (President const& president: reElections) {
+        std::cout << president.name << " was re-elected president of "
+                  << president.country << " in " << president.year << ".\n";
+    }
+
+    // Pop_back method
+    std::cout << std::endl << "Pop_back method tests:" << std::endl;
+
+    Vector<int> c4;
+    std::cout << c4 << std::endl;
+
+    c4.push_back(5);
+    c4.push_back(3);
+    c4.push_back(4);
+    std::cout << c4 << std::endl;
+
+    c4.pop_back();
+    std::cout << c4 << std::endl;
+
+    // Resize method
+    std::cout << std::endl << "Resize method tests:" << std::endl;
+
+    Vector<int> con = {1, 2, 3};
+    std::cout << "The vector holds: ";
+    std::cout << con << std::endl;
+
+    con.resize(5);
+    std::cout << "After resize up to 5: ";
+    std::cout << con << std::endl;
+
+    con.resize(2);
+    std::cout << "After resize down to 2: ";
+    std::cout << con << std::endl;
+
+    con.resize(6, 4);
+    std::cout << "After resize up to 6 (initializer = 4): ";
+    std::cout << con << std::endl;
+
+    // Swap method
+    std::cout << std::endl << "Swap method tests:" << std::endl;
+
+    Vector<int> a1{1, 2, 3}, a2{4, 5};
+
+    auto it1 = std::next(a1.begin());
+    auto it2 = std::next(a2.begin());
+
+    int& ref1 = a1.front();
+    int& ref2 = a2.front();
+
+    std::cout << "{ " << a1 << "}" << " { " << a2 << "} " << *it1 << ' ' << *it2 << ' ' << ref1 << ' ' << ref2 << '\n';
+    a1.swap(a2);
+    std::cout << "{ " << a1 << "}" << " { " << a2 << "} " << *it1 << ' ' << *it2 << ' ' << ref1 << ' ' << ref2 << '\n';
+
+    // Comparison operators
+    std::cout << std::endl << "Comparison operator tests:" << std::endl;
+    Vector<int> alice{1, 2, 3};
+    Vector<int> bob{7, 8, 9, 10};
+    Vector<int> eve{1, 2, 3};
+
+    std::cout << std::boolalpha;
+
+    // Compare non equal containers
+    std::cout << "alice == bob returns " << (alice == bob) << '\n';
+    std::cout << "alice != bob returns " << (alice != bob) << '\n';
+    std::cout << "alice <  bob returns " << (alice < bob) << '\n';
+    std::cout << "alice <= bob returns " << (alice <= bob) << '\n';
+    std::cout << "alice >  bob returns " << (alice > bob) << '\n';
+    std::cout << "alice >= bob returns " << (alice >= bob) << '\n';
+
+    std::cout << '\n';
+
+    // Compare equal containers
+    std::cout << "alice == eve returns " << (alice == eve) << '\n';
+    std::cout << "alice != eve returns " << (alice != eve) << '\n';
+    std::cout << "alice <  eve returns " << (alice < eve) << '\n';
+    std::cout << "alice <= eve returns " << (alice <= eve) << '\n';
+    std::cout << "alice >  eve returns " << (alice > eve) << '\n';
+    std::cout << "alice >= eve returns " << (alice >= eve) << '\n';
 
     return 0;
 }
