@@ -373,6 +373,20 @@ int main() {
                   << president.country << " in " << president.year << ".\n";
     }
 
+    // Push_back method
+    std::cout << std::endl << "Push_back method tests: " << std::endl;
+
+    Vector<std::string> letts;
+
+    letts.push_back("abc");
+    std::string s{"def"};
+    letts.push_back(std::move(s));
+
+    std::cout << "Vector `letters` holds: ";
+    for (auto&& e : letts) std::cout << std::quoted(e) << ' ';
+
+    std::cout << "\nMoved-from string `s` holds: " << std::quoted(s) << '\n';
+
     // Pop_back method
     std::cout << std::endl << "Pop_back method tests:" << std::endl;
 
