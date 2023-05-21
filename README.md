@@ -91,3 +91,22 @@ Visi galimi vektoriaus pavyzdžiai pateikti `src/main.cpp` faile. Keletas jų:
     std::cout << c4 << std::endl;
     // Spausdina: 5 3, 'size' sumažėja iki 2.
 ```
+
+## Spartos analizė
+
+Vektorių užpildymas skaičiais naudojant 'push_back' metodą.
+
+| Elementų kiekis | std::vector laikas | Vector laikas |
+|-----------------|--------------------|---------------|
+| 10 000          | 1.7ms              | 1.07ms        |
+| 100 000         | 2.03ms             | 1.5ms         |
+| 1 000 000       | 0.005s             | 0.006s        |
+| 10 000 000      | 0.053s             | 0.073s        |
+| 100 000 000     | 0.477s             | 0.443s        |
+
+## Perskirstymų skaičius
+
+| Elementų kiekis | std::vector perskirstymai | Vector perskirstymai |
+|-----------------|---------------------------|----------------------|
+| 100 000 000     | 28                        | 28                   |
+

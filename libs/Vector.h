@@ -45,24 +45,22 @@ public:
         std::move(element_list.begin(), element_list.end(), m_elements);
     }
 
-    Vector(Vector& v)
+    Vector(const Vector<value_type>& v)
         : m_size(v.m_size),
           m_capacity(v.m_capacity),
           m_elements(new value_type[v.m_size]) {
         std::copy(v.m_elements, v.m_elements + v.m_size, m_elements);
     }
 
-    Vector(Vector&& v) noexcept
+    Vector(Vector<value_type>&& v) noexcept
         : m_size(v.m_size),
-          m_capacity(v.m_capacity),
-          m_elements(std::move(v.m_elements, v.m_elements + v.m_size)) {
+          m_capacity(v.m_capacity) {
+        reallocate(m_capacity);
+        std::move(v.m_elements, v.m_elements + v.m_size, m_elements);
         v.m_size = v.m_capacity = 0;
     }
 
-    ~Vector() {
-        m_size = m_capacity = 0;
-        delete [] m_elements;
-    }
+    ~Vector() = default;
 
     // Getters
 
@@ -135,7 +133,12 @@ public:
         }
     }
 
-    void shrink_to_fit() { reallocate(m_size); }
+    void shrink_to_fit() {
+        for (int i = m_size - 1; i < m_capacity; i++) {
+            m_elements[i].~value_type();
+        }
+        reallocate(m_size);
+    }
 
     void clear() {
         for (size_type i = 0; i < m_size; i++) m_elements[i].~value_type();
@@ -154,7 +157,8 @@ public:
 
     void assign(iterator start, iterator end) {
         size_type size = end - start;
-        if (size > m_capacity) {
+
+        if (size > m_capacity || !m_elements) {
             reallocate(size);
             m_size = m_capacity;
         }

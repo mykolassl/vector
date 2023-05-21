@@ -1,26 +1,9 @@
-#include <iostream>
-#include "../libs/Vector.hpp"
-#include <chrono>
-#include <vector>
-#include <algorithm>
-#include <numeric>
-#include <iomanip>
+#include "../libs/lib.h"
+#include "../libs/apdorojimas.h"
 
 class Entity {
 public:
     int x = 10;
-
-    Entity() {
-        std::cout << "Constructor was called" << std::endl;
-    }
-
-    Entity(const Entity& e) {
-        std::cout << "Object was copied" << std::endl;
-    }
-
-    ~Entity() {
-        std::cout << "Destructor was called" << std::endl;
-    }
 
     friend std::ostream& operator<<(std::ostream& out, const Entity& e) {
         out << e.x << " ";
@@ -75,6 +58,8 @@ void pointer_func(const int* p, size_t size) {
 }
 
 int main() {
+    /*
+
     // Constructors
     std::cout << std::endl << "Constructor tests:" << std::endl;
 
@@ -460,6 +445,80 @@ int main() {
     std::cout << "alice <= eve returns " << (alice <= eve) << '\n';
     std::cout << "alice >  eve returns " << (alice > eve) << '\n';
     std::cout << "alice >= eve returns " << (alice >= eve) << '\n';
+
+    */
+
+    /*
+
+    unsigned int size = 100000000;
+    std::vector<Entity> vec1;
+
+    auto start = std::chrono::high_resolution_clock::now();
+
+    for (int i = 0; i < size; i++) {
+        vec1.emplace_back(Entity());
+    }
+    std::cout << "\nSize=" << vec1.size() << ", Capacity=" << vec1.capacity() << '\n';
+
+    auto end = std::chrono::high_resolution_clock::now();
+    auto diff = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+    std::cout << "STL vektoriaus uzpildymas " << size << " elementu uztruko " << diff.count() / 1000.0 << std::endl;
+
+    std::vector<Entity> vec2;
+
+    auto start2 = std::chrono::high_resolution_clock::now();
+
+    for (int i = 0; i < size; i++) {
+        vec2.emplace_back(Entity());
+    }
+    std::cout << "\nSize=" << vec2.size() << ", Capacity=" << vec2.capacity() << '\n';
+
+    auto end2 = std::chrono::high_resolution_clock::now();
+    auto diff2 = std::chrono::duration_cast<std::chrono::microseconds>(end2 - start2);
+    std::cout << "Vektoriaus uzpildymas " << size << " elementu uztruko " << diff2.count() / 1000.0 << std::endl;
+
+    */
+
+
+
+    char ivestiesBudas;
+    std::cout << "Kaip norite vykdyti studentu duomenu ivesti? (r - ivesti ranka, f - skaityti is failo, g - generuoti failus) "; std::cin >> ivestiesBudas;
+    while (ivestiesBudas != 'r' && ivestiesBudas != 'f' && ivestiesBudas != 'g') {
+        std::cout << "Neteisinga ivestis, bandykite dar karta: ";
+
+        std::cin.ignore(80, '\n');
+        std::cin.clear();
+
+        std::cin >> ivestiesBudas;
+    }
+
+    if (ivestiesBudas == 'r') ivesti_ranka();
+    else if (ivestiesBudas == 'f') skaityti_faila();
+    else generuoti_failus();
+
+
+
+    /*
+
+    std::vector<int> vec1;
+    size_t perskirstymuSk1 = 0;
+
+    for (int i = 0; i < 100000000; i++) {
+        if (vec1.size() == vec1.capacity()) perskirstymuSk1++;
+        vec1.push_back(i);
+    }
+    cout << "Pildant " << vec1.size() << " dydzio vektoriu, ivyko " << perskirstymuSk1 << " perskirstymu." << endl;
+
+    Vector<int> vec2;
+    size_t perskirstymuSk2 = 0;
+
+    for (int i = 0; i < 100000000; i++) {
+        if (vec2.size() == vec2.capacity()) perskirstymuSk2++;
+        vec2.push_back(i);
+    }
+    cout << "Pildant " << vec2.size() << " dydzio vektoriu, ivyko " << perskirstymuSk2 << " perskirstymu." << endl;
+
+     */
 
     return 0;
 }
