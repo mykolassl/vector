@@ -28,19 +28,10 @@ void dalinimas_1(Vector<Studentas>& grupe, Vector<Studentas>& vargsai, Vector<St
 }
 
 void dalinimas_2(Vector<Studentas>& grupe, Vector<Studentas>& protingi) {
-    cout << "LOL\n";
     auto splitItr = find_if(grupe.begin(), grupe.end(), [](Studentas& stud) { return stud.galutinis_vid() >= 5; });
-    cout << "LOL\n";
-
     protingi.assign(splitItr, grupe.end());
-    cout << "LOL\n" << protingi.size() << " " << protingi.capacity();
-
     grupe.resize(grupe.size() - protingi.size());
-    cout << "LOL\n" << grupe.size() << " " << grupe.capacity();
-
-//    grupe.shrink_to_fit();
-    cout << "LOL\n";
-
+    grupe.shrink_to_fit();
 }
 
 void pildyti(Studentas& stud, bool& arTesti, int ndKiekis) {
@@ -239,7 +230,7 @@ void skaityti_faila() {
 
     timer.start();
 
-    sort(grupe.begin(), grupe.end(), [](const Studentas& a, const Studentas& b) { return a < b; });
+    sort(grupe.begin(), grupe.end());
 
     timer.end();
     timer.print("Studentu rikiavimas uztruko");

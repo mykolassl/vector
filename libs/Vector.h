@@ -22,7 +22,7 @@ public:
     explicit Vector(int size)
         : m_size(size),
           m_capacity(size),
-          m_elements(new value_type[size]{}) {}
+          m_elements(new value_type[size]) {}
 
     Vector(int size, value_type fill_element)
         : m_size(size),
@@ -48,14 +48,14 @@ public:
     Vector(const Vector<value_type>& v)
         : m_size(v.m_size),
           m_capacity(v.m_capacity),
-          m_elements(new value_type[v.m_size]) {
+          m_elements(new value_type[v.m_capacity]) {
         std::copy(v.m_elements, v.m_elements + v.m_size, m_elements);
     }
 
     Vector(Vector<value_type>&& v) noexcept
         : m_size(v.m_size),
           m_capacity(v.m_capacity) {
-        reallocate(m_capacity);
+        reallocate(v.m_capacity);
         std::move(v.m_elements, v.m_elements + v.m_size, m_elements);
         v.m_size = v.m_capacity = 0;
     }
@@ -149,9 +149,10 @@ public:
         if (size > m_capacity) {
             reallocate(size);
             m_size = m_capacity;
+        } else {
+            m_size = size;
         }
 
-        m_size = size;
         std::fill(m_elements, m_elements + m_size, fill_element);
     }
 
@@ -161,9 +162,10 @@ public:
         if (size > m_capacity || !m_elements) {
             reallocate(size);
             m_size = m_capacity;
+        } else {
+            m_size = size;
         }
 
-        m_size = size;
         std::copy(start, end, m_elements);
     }
 
@@ -334,6 +336,11 @@ public:
         return m_elements[index];
     }
 
+    value_type& operator[](size_type index) {
+        if (index >= m_size) throw std::out_of_range("Index out of vector bounds");
+        return m_elements[index];
+    }
+
     Vector<value_type>& operator=(const Vector<value_type>& v) {
         if (&v == this) return *this;
 
@@ -365,6 +372,8 @@ public:
         return out;
     }
 
+    friend void sort(iterator first, iterator last) {}
+
     auto operator<=> (const Vector<value_type>& v) const {
         return std::lexicographical_compare_three_way(cbegin(), cend(), v.cbegin(), v.cend());
     }
@@ -389,7 +398,7 @@ private:
             if (new_capacity == ((size_type) - 1)) m_capacity *= 2;
             else m_capacity = new_capacity;
 
-            iterator temporary = new value_type[new_capacity == ((size_type) - 1) ? m_capacity : new_capacity];
+            iterator temporary = new value_type[m_capacity];
             std::move(m_elements, m_elements + m_size, temporary);
             delete [] m_elements;
             m_elements = temporary;
