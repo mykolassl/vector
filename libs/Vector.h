@@ -331,7 +331,7 @@ public:
 
     // Operator overloads
 
-    value_type operator[](size_type index) const {
+    const value_type& operator[](size_type index) const {
         if (index >= m_size) throw std::out_of_range("Index out of vector bounds");
         return m_elements[index];
     }
@@ -372,8 +372,6 @@ public:
         return out;
     }
 
-    friend void sort(iterator first, iterator last) {}
-
     auto operator<=> (const Vector<value_type>& v) const {
         return std::lexicographical_compare_three_way(cbegin(), cend(), v.cbegin(), v.cend());
     }
@@ -391,6 +389,8 @@ private:
     iterator m_elements;
 
     void reallocate(const size_type& new_capacity = ((size_type) - 1)) noexcept {
+        if (m_capacity == new_capacity) return;
+
         if (m_capacity == 0) {
             m_capacity = new_capacity == ((size_type) - 1) ? 2 : new_capacity;
             m_elements = new value_type[m_capacity];

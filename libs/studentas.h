@@ -85,7 +85,7 @@ public:
         return *this;
     }
 
-    Studentas& operator=(Studentas&& stud) {
+    Studentas& operator=(Studentas&& stud)  noexcept {
         if (&stud == this) return *this;
 
         m_Vardas = stud.m_Vardas;

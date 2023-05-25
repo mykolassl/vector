@@ -58,6 +58,8 @@ void pointer_func(const int* p, size_t size) {
 }
 
 int main() {
+    // Pagr. funkcijos
+
     /*
 
     // Constructors
@@ -448,36 +450,79 @@ int main() {
 
     */
 
+    // Int push
+
     /*
 
     unsigned int size = 100000000;
-    std::vector<Entity> vec1;
+    std::vector<int> vec1;
 
     auto start = std::chrono::high_resolution_clock::now();
 
     for (int i = 0; i < size; i++) {
-        vec1.emplace_back(Entity());
+        vec1.push_back(i);
     }
     std::cout << "\nSize=" << vec1.size() << ", Capacity=" << vec1.capacity() << '\n';
 
     auto end = std::chrono::high_resolution_clock::now();
-    auto diff = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+    auto diff = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
     std::cout << "STL vektoriaus uzpildymas " << size << " elementu uztruko " << diff.count() / 1000.0 << std::endl;
 
-    std::vector<Entity> vec2;
+    Vector<int> vec2;
 
     auto start2 = std::chrono::high_resolution_clock::now();
 
     for (int i = 0; i < size; i++) {
-        vec2.emplace_back(Entity());
+        vec2.push_back(i);
     }
     std::cout << "\nSize=" << vec2.size() << ", Capacity=" << vec2.capacity() << '\n';
 
     auto end2 = std::chrono::high_resolution_clock::now();
-    auto diff2 = std::chrono::duration_cast<std::chrono::microseconds>(end2 - start2);
+    auto diff2 = std::chrono::duration_cast<std::chrono::milliseconds>(end2 - start2);
     std::cout << "Vektoriaus uzpildymas " << size << " elementu uztruko " << diff2.count() / 1000.0 << std::endl;
 
     */
+
+    // Studentu push
+
+    /*
+
+    unsigned int size = 10000;
+    Vector<int> pazymiai(5, 10);
+    Studentas studentas;
+    studentas.vardas("Vardas");
+    studentas.pavarde("Vardas");
+    studentas.pazymiai(pazymiai);
+
+    std::vector<Studentas> vec1;
+
+    auto start = std::chrono::high_resolution_clock::now();
+
+    for (int i = 0; i < size; i++) {
+        vec1.push_back(studentas);
+    }
+    std::cout << "\nSize=" << vec1.size() << ", Capacity=" << vec1.capacity() << '\n';
+
+    auto end = std::chrono::high_resolution_clock::now();
+    auto diff = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+    std::cout << "STL vektoriaus uzpildymas " << size << " elementu uztruko " << diff.count() / 1000.0 << std::endl;
+
+    Vector<Studentas> vec2;
+
+    auto start2 = std::chrono::high_resolution_clock::now();
+
+    for (int i = 0; i < size; i++) {
+        vec2.push_back(studentas);
+    }
+    std::cout << "\nSize=" << vec2.size() << ", Capacity=" << vec2.capacity() << '\n';
+
+    auto end2 = std::chrono::high_resolution_clock::now();
+    auto diff2 = std::chrono::duration_cast<std::chrono::milliseconds>(end2 - start2);
+    std::cout << "Vektoriaus uzpildymas " << size << " elementu uztruko " << diff2.count() / 1000.0 << std::endl;
+
+    */
+
+    // Main programa
 
 
 
@@ -497,6 +542,8 @@ int main() {
     else generuoti_failus();
 
 
+
+    // Perskirstymai
 
     /*
 

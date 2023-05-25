@@ -104,6 +104,24 @@ Vektorių užpildymas skaičiais naudojant 'push_back' metodą.
 | 10 000 000      | 0.053s             | 0.073s        |
 | 100 000 000     | 0.477s             | 0.443s        |
 
+Vektorių užpildymas studento objektais naudojant 'push_back' metodą.
+
+| Elementų kiekis | std::vector laikas | Vector laikas |
+|-----------------|--------------------|---------------|
+| 10 000          | 9.2ms              | 6.9ms         |
+| 100 000         | 41.7ms             | 48.9ms        |
+| 1 000 000       | 0.34s              | 0.29s         |
+| 10 000 000      | 3.8s               | 4.6s          |
+
+Programos veikimo laikas apdorojant studentų duomenis. Studentų kiekis - 100 000, laikas sekundėmis.
+
+| Vektoriaus tipas | Failo generavimas | Failo skaitymas | Duomenų apdorojimas | Studentų rušiavimas | Išvedimas | Visas laikas |
+|------------------|-------------------|-----------------|---------------------|---------------------|-----------|--------------|
+| std::vector      | 0.09              | 0.1             | 0.14                | 0.055               | 0.17      | 0.47         |
+| Vector           | 0.037             | 0.16            | 26.78*              | 0.1                 | 0.33      | 27.4         |
+
+*Naudotas bubble sort rikiavimo metodas.
+
 ## Perskirstymų skaičius
 
 | Elementų kiekis | std::vector perskirstymai | Vector perskirstymai |

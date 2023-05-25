@@ -34,6 +34,18 @@ void dalinimas_2(Vector<Studentas>& grupe, Vector<Studentas>& protingi) {
     grupe.shrink_to_fit();
 }
 
+void vec_sort(Vector<Studentas>::iterator start, Vector<Studentas>::iterator end) {
+    for (auto i = start; i != end; i++) {
+        for (auto j = i; j != end; j++) {
+            if (*i > *j) {
+                auto temp = *i;
+                *i = *j;
+                *j = temp;
+            }
+        }
+    }
+}
+
 void pildyti(Studentas& stud, bool& arTesti, int ndKiekis) {
     // ************** Vardas ir pavarde **************
     Vector<int> pazymiai;
@@ -217,6 +229,7 @@ void skaityti_faila() {
     Studentas stud(pazymiuKiekis);
 
     Vector<Studentas> grupe, protingi, vargsai;
+    grupe.reserve(1000001);
 
     while (!ssIn.eof()) {
         ssIn >> stud;      
@@ -230,7 +243,11 @@ void skaityti_faila() {
 
     timer.start();
 
-    sort(grupe.begin(), grupe.end());
+//    sort(grupe.begin(), grupe.end(), [](const Studentas& a, const Studentas& b) {
+//        return a < b;
+//    });
+
+    vec_sort(grupe.begin(), grupe.end());
 
     timer.end();
     timer.print("Studentu rikiavimas uztruko");
@@ -307,7 +324,7 @@ void generuoti_failus() {
         cin >> ndKiekis;
     }
 
-    for (int i = 1000; i <= 10000000; i *= 10) {
+    for (int i = 10; i <= 10000000; i *= 10) {
         auto pradzia = high_resolution_clock::now();
 
         generuoti_faila(i, ndKiekis);
