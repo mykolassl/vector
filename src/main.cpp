@@ -454,7 +454,7 @@ int main() {
 
     /*
 
-    unsigned int size = 100000000;
+    unsigned int size = 100000;
     std::vector<int> vec1;
 
     auto start = std::chrono::high_resolution_clock::now();
@@ -487,7 +487,7 @@ int main() {
 
     /*
 
-    unsigned int size = 10000;
+    unsigned int size = 100000;
     Vector<int> pazymiai(5, 10);
     Studentas studentas;
     studentas.vardas("Vardas");

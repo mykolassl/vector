@@ -35,8 +35,20 @@ void dalinimas_2(Vector<Studentas>& grupe, Vector<Studentas>& protingi) {
 }
 
 void vec_sort(Vector<Studentas>::iterator start, Vector<Studentas>::iterator end) {
-    for (auto i = start; i != end; i++) {
-        for (auto j = i; j != end; j++) {
+    for (auto i = start; i != end--; i++) {
+        for (auto j = i + 1; j != end; j++) {
+            if (*i > *j) {
+                auto temp = *i;
+                *i = *j;
+                *j = temp;
+            }
+        }
+    }
+}
+
+void vec_sort(std::vector<Studentas>::iterator start, std::vector<Studentas>::iterator end) {
+    for (auto i = start; i != end--; i++) {
+        for (auto j = i + 1; j != end; j++) {
             if (*i > *j) {
                 auto temp = *i;
                 *i = *j;
