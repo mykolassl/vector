@@ -117,8 +117,8 @@ Programos veikimo laikas apdorojant studentų duomenis. Studentų kiekis - 100 0
 
 | Vektoriaus tipas | Failo skaitymas | Failo apdorojimas | Studentų rūšiavimas | Studentų atskyrimas | Išvedimas | Visas laikas |
 |------------------|-----------------|-------------------|---------------------|---------------------|-----------|--------------|
-| std::vector      | 0.043           | 0.13              | 12.8                | 0.017               | 0.16      | 13.16        |
-| Vector           | 0.075           | 0.16              | 14.5*               | 0.075               | 0.27      | 15.2         |
+| std::vector      | 0.043           | 0.13              | 22.8*               | 0.017               | 0.16      | 23.5         |
+| Vector           | 0.075           | 0.16              | 28.5*               | 0.075               | 0.27      | 28.8         |
 
 *Naudotas bubble sort rikiavimo metodas.
 

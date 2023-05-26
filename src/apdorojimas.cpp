@@ -34,8 +34,8 @@ void dalinimas_2(Vector<Studentas>& grupe, Vector<Studentas>& protingi) {
     grupe.shrink_to_fit();
 }
 
-void vec_sort(Vector<Studentas>::iterator start, Vector<Studentas>::iterator end) {
-    for (auto i = start; i != end--; i++) {
+void vec_sort(std::vector<Studentas>::iterator start, std::vector<Studentas>::iterator end) {
+    for (auto i = start; i != end - 1; i++) {
         for (auto j = i + 1; j != end; j++) {
             if (*i > *j) {
                 auto temp = *i;
@@ -46,8 +46,8 @@ void vec_sort(Vector<Studentas>::iterator start, Vector<Studentas>::iterator end
     }
 }
 
-void vec_sort(std::vector<Studentas>::iterator start, std::vector<Studentas>::iterator end) {
-    for (auto i = start; i != end--; i++) {
+void vec_sort(Vector<Studentas>::iterator start, Vector<Studentas>::iterator end) {
+    for (auto i = start; i != end - 1; i++) {
         for (auto j = i + 1; j != end; j++) {
             if (*i > *j) {
                 auto temp = *i;
