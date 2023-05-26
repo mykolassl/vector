@@ -25,13 +25,13 @@ const string pavardesMot[varduKiekis] = {
     "Pociute", "Savickaite", "Stonkaite", "Petrauskaite",
     "Paulauskaite", "Jankauskaite", "Zukauskaite", "Vasiliauskaite"};
 
-double apskaiciuoti_vidurki(Vector<int> ndPazymiai) {
+double apskaiciuoti_vidurki(std::vector<int> ndPazymiai) {
     int sum = accumulate(ndPazymiai.begin(), ndPazymiai.end(), 0);
     
     return (double)sum / ndPazymiai.size();
 }
 
-double apskaiciuoti_mediana(Vector<int> ndPazymiai) {
+double apskaiciuoti_mediana(std::vector<int> ndPazymiai) {
     sort(ndPazymiai.begin(), ndPazymiai.end());
 
     if (ndPazymiai.size() % 2 == 1) {
@@ -41,7 +41,7 @@ double apskaiciuoti_mediana(Vector<int> ndPazymiai) {
     }
 }
 
-void generuoti_pazymius(Vector<int>& ndPazymiai, int& egzaminas) {
+void generuoti_pazymius(std::vector<int>& ndPazymiai, int& egzaminas) {
     random_device r_d;
     mt19937 mt(r_d());
     uniform_int_distribution<int> dist(1, 10);

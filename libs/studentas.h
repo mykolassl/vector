@@ -23,7 +23,7 @@ class Studentas: public Zmogus {
 private:
     double m_Galutinis_vid, m_Galutinis_med;
     int m_EgzPazymys, m_Pazymiu_kiekis;
-    Vector<int> m_Nd_pazymiai;
+    std::vector<int> m_Nd_pazymiai;
 
 public:
     Studentas()
@@ -53,20 +53,20 @@ public:
     void pavarde(std::string pavarde) { m_Pavarde = pavarde; }
     std::string pavarde() const { return m_Pavarde; } 
 
-    void pazymiai(Vector<int>& nd) {
+    void pazymiai(std::vector<int>& nd) {
         m_EgzPazymys = nd.back();
         nd.pop_back();
         m_Nd_pazymiai = nd;
         m_Galutinis_vid = 0.4 * apskaiciuoti_vidurki(m_Nd_pazymiai) + 0.6 * m_EgzPazymys;      
         m_Galutinis_med = 0.4 * apskaiciuoti_mediana(m_Nd_pazymiai) + 0.6 * m_EgzPazymys;
     }
-    void pazymiai(Vector<int>& nd, int egzaminas) {
+    void pazymiai(std::vector<int>& nd, int egzaminas) {
         m_EgzPazymys = egzaminas;
         m_Nd_pazymiai = nd;
         m_Galutinis_vid = 0.4 * apskaiciuoti_vidurki(m_Nd_pazymiai) + 0.6 * m_EgzPazymys;      
         m_Galutinis_med = 0.4 * apskaiciuoti_mediana(m_Nd_pazymiai) + 0.6 * m_EgzPazymys;
     }
-    [[nodiscard]] Vector<int> pazymiai() const { return m_Nd_pazymiai; }
+    [[nodiscard]] std::vector<int> pazymiai() const { return m_Nd_pazymiai; }
 
     double galutinis_vid() const { return m_Galutinis_vid; }
     double galutinis_med() const { return m_Galutinis_med; }

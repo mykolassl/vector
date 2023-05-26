@@ -2,7 +2,7 @@
 #include "../libs/studentas.h"
 #include "../libs/timer.hpp"
 
-void isvesti_faila(Vector<Studentas>& grupe, string failoPav) {
+void isvesti_faila(std::vector<Studentas>& grupe, string failoPav) {
     char eilute[100];
     string output = "";
 
@@ -18,7 +18,7 @@ void isvesti_faila(Vector<Studentas>& grupe, string failoPav) {
     fout.close();
 };
 
-void dalinimas_1(Vector<Studentas>& grupe, Vector<Studentas>& vargsai, Vector<Studentas>& protingi) {
+void dalinimas_1(std::vector<Studentas>& grupe, std::vector<Studentas>& vargsai, std::vector<Studentas>& protingi) {
     cout << "LOL\n";
     auto splitItr = find_if(grupe.begin(), grupe.end(), [](Studentas& stud) {return stud.galutinis_vid() >= 5;});
     cout << "LOL\n";
@@ -27,7 +27,7 @@ void dalinimas_1(Vector<Studentas>& grupe, Vector<Studentas>& vargsai, Vector<St
     grupe.clear();
 }
 
-void dalinimas_2(Vector<Studentas>& grupe, Vector<Studentas>& protingi) {
+void dalinimas_2(std::vector<Studentas>& grupe, std::vector<Studentas>& protingi) {
     auto splitItr = find_if(grupe.begin(), grupe.end(), [](Studentas& stud) { return stud.galutinis_vid() >= 5; });
     protingi.assign(splitItr, grupe.end());
     grupe.resize(grupe.size() - protingi.size());
@@ -60,7 +60,7 @@ void vec_sort(Vector<Studentas>::iterator start, Vector<Studentas>::iterator end
 
 void pildyti(Studentas& stud, bool& arTesti, int ndKiekis) {
     // ************** Vardas ir pavarde **************
-    Vector<int> pazymiai;
+    std::vector<int> pazymiai;
     string vardas, pavarde;
     int egzPazymys;
     cout << "Iveskite studento varda: "; cin >> vardas;
@@ -172,7 +172,7 @@ void skaityti_faila() {
 
     string failas;
     int failoIndeksas;
-    Vector<string> failuSarasas;
+    std::vector<string> failuSarasas;
 
     system("dir /b *.txt > sarasas.txt");
     ifstream fsar("sarasas.txt");
@@ -240,7 +240,7 @@ void skaityti_faila() {
 
     Studentas stud(pazymiuKiekis);
 
-    Vector<Studentas> grupe, protingi, vargsai;
+    std::vector<Studentas> grupe, protingi, vargsai;
     grupe.reserve(1000001);
 
     while (!ssIn.eof()) {
@@ -302,7 +302,7 @@ void ivesti_ranka() {
     cin.clear();
     cin.ignore(80, '\n');
 
-    Vector<Studentas> grupe;
+    std::vector<Studentas> grupe;
 
     while (arTesti) {
         Studentas temp;
