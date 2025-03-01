@@ -63,7 +63,7 @@ int main() {
     /*
 
     // Constructors
-    std::cout << std::endl << "Constructor tests:" << std::endl;
+    std::cout << std::endl << "Constructor test:" << std::endl;
 
     Vector<std::string> words1 { "123", "321", "213" };
     std::cout << words1 << std::endl;
@@ -78,7 +78,7 @@ int main() {
     std::cout << words4 << std::endl;
 
     // Assignments
-    std::cout << std::endl << "Assignment tests: " << std::endl;
+    std::cout << std::endl << "Assignment test: " << std::endl;
 
     Vector<int> x { 1, 2, 3 }, y, z;
     const auto w = { 4, 5, 6, 7 };
@@ -102,7 +102,7 @@ int main() {
     std::cout << "z = " << z << std::endl;
 
     // Assign method
-    std::cout << std::endl << "Assign method tests:" << std::endl;
+    std::cout << std::endl << "Assign method test:" << std::endl;
 
     Vector<char> characters;
     characters.assign(5, 'a');
@@ -116,7 +116,7 @@ int main() {
     std::cout << characters << std::endl;
 
     // At method
-    std::cout << std::endl << "At method tests:" << std::endl;
+    std::cout << std::endl << "At method test:" << std::endl;
 
     Vector<int> data = { 1, 2, 4, 5, 5, 6 };
     data.at(1) = 88;
@@ -133,7 +133,7 @@ int main() {
     std::cout << data << std::endl;
 
     // Front and back methods
-    std::cout << std::endl << "Front and back method tests:" << std::endl;
+    std::cout << std::endl << "Front and back method test:" << std::endl;
 
     Vector<char> letters {'a', 'b', 'c', 'd', 'e', 'f'};
     if (!letters.empty()) {
@@ -142,13 +142,13 @@ int main() {
     }
 
     // Data method
-    std::cout << std::endl << "Data method tests:" << std::endl;
+    std::cout << std::endl << "Data method test:" << std::endl;
 
     Vector<int> container {1, 2, 3, 4};
     pointer_func(container.data(), container.size());
 
     // Begin and end methods
-    std::cout << std::endl << "Begin and end method tests:" << std::endl;
+    std::cout << std::endl << "Begin and end method test:" << std::endl;
 
     Vector<int> nums {1, 2, 4, 8, 16};
     Vector<std::string> fruits {"orange", "apple", "raspberry"};
@@ -164,7 +164,7 @@ int main() {
     if (empty.begin() == empty.end()) std::cout << "vector 'empty' is indeed empty." << std::endl;
 
     // Empty method
-    std::cout << std::endl << "Empty method tests:" << std::endl << std::boolalpha;
+    std::cout << std::endl << "Empty method test:" << std::endl << std::boolalpha;
 
     Vector<int> numbers;
     std::cout << "Initially, numbers.empty(): " << numbers.empty() << std::endl;
@@ -173,14 +173,14 @@ int main() {
     std::cout << "After adding elements, numbers.empty(): " << numbers.empty() << std::endl;
 
     // Size method
-    std::cout << std::endl << "Size and max_size method tests:" << std::endl;
+    std::cout << std::endl << "Size and max_size method test:" << std::endl;
 
     Vector<int> ns {1, 3, 5, 7};
 
     std::cout << "'ns' contains " << ns.size() << " elements." << std::endl;
 
     // Reserve method
-    std::cout << std::endl << "Reserve method tests:" << std::endl;
+    std::cout << std::endl << "Reserve method test:" << std::endl;
 
     const int maxElements = 32;
     {
@@ -210,7 +210,7 @@ int main() {
     }
 
     // Capacity method
-    std::cout << std::endl << "Capacity method tests:" << std::endl;
+    std::cout << std::endl << "Capacity method test:" << std::endl;
 
     int sz = 100;
     Vector<int> v;
@@ -233,7 +233,7 @@ int main() {
     std::cout << "\nFinal size: " << v.size() << ", capacity: " << v.capacity() << '\n';
 
     // Shrink_to_fit method
-    std::cout << std::endl << "Shrink_to_fit method tests:" << std::endl;
+    std::cout << std::endl << "Shrink_to_fit method test:" << std::endl;
 
     Vector<int> v1;
     std::cout << "Default-constructed capacity is " << v1.capacity() << '\n';
@@ -254,7 +254,7 @@ int main() {
     std::cout << v1 << std::endl;
 
     // Clear method
-    std::cout << std::endl << "Clear method tests:" << std::endl;
+    std::cout << std::endl << "Clear method test:" << std::endl;
 
     Vector<int> v3{1, 2, 3};
 
@@ -270,7 +270,7 @@ int main() {
     std::cout << "\nSize=" << v3.size() << ", Capacity=" << v3.capacity() << '\n';
 
     // Insert method
-    std::cout << std::endl << "Insert method tests:" << std::endl;
+    std::cout << std::endl << "Insert method test:" << std::endl;
 
     Vector<int> c1(3, 100);
     std::cout << c1 << std::endl;
@@ -293,7 +293,7 @@ int main() {
     std::cout << c1 << std::endl;
 
     // Emplace method
-    std::cout << std::endl << "Emplace method tests:" << std::endl;
+    std::cout << std::endl << "Emplace method test:" << std::endl;
 
     Vector<A> c3;
     c3.reserve(10);
@@ -318,7 +318,7 @@ int main() {
     std::cout << '\n';
 
     // Erase method
-    std::cout << std::endl << "Erase method tests:" << std::endl;
+    std::cout << std::endl << "Erase method test:" << std::endl;
 
     Vector<int> c{0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
     std::cout << c << std::endl;
@@ -340,7 +340,7 @@ int main() {
     std::cout << c << std::endl;
 
     // Emplace_back method
-    std::cout << std::endl << "Emplace_back method tests:" << std::endl;
+    std::cout << std::endl << "Emplace_back method test:" << std::endl;
     
     Vector<President> elections;
     std::cout << "emplace_back:\n";
@@ -361,7 +361,7 @@ int main() {
     }
 
     // Push_back method
-    std::cout << std::endl << "Push_back method tests: " << std::endl;
+    std::cout << std::endl << "Push_back method test: " << std::endl;
 
     Vector<std::string> letts;
 
@@ -375,7 +375,7 @@ int main() {
     std::cout << "\nMoved-from string `s` holds: " << std::quoted(s) << '\n';
 
     // Pop_back method
-    std::cout << std::endl << "Pop_back method tests:" << std::endl;
+    std::cout << std::endl << "Pop_back method test:" << std::endl;
 
     Vector<int> c4;
     std::cout << c4 << std::endl;
@@ -389,7 +389,7 @@ int main() {
     std::cout << c4 << std::endl;
 
     // Resize method
-    std::cout << std::endl << "Resize method tests:" << std::endl;
+    std::cout << std::endl << "Resize method test:" << std::endl;
 
     Vector<int> con = {1, 2, 3};
     std::cout << "The vector holds: ";
@@ -408,7 +408,7 @@ int main() {
     std::cout << con << std::endl;
 
     // Swap method
-    std::cout << std::endl << "Swap method tests:" << std::endl;
+    std::cout << std::endl << "Swap method test:" << std::endl;
 
     Vector<int> a1{1, 2, 3}, a2{4, 5};
 
@@ -423,7 +423,7 @@ int main() {
     std::cout << "{ " << a1 << "}" << " { " << a2 << "} " << *it1 << ' ' << *it2 << ' ' << ref1 << ' ' << ref2 << '\n';
 
     // Comparison operators
-    std::cout << std::endl << "Comparison operator tests:" << std::endl;
+    std::cout << std::endl << "Comparison operator test:" << std::endl;
     Vector<int> alice{1, 2, 3};
     Vector<int> bob{7, 8, 9, 10};
     Vector<int> eve{1, 2, 3};
